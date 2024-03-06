@@ -3,6 +3,9 @@ import { ref } from "vue";
 import axios from "axios";
 import moment from "moment";
 
+import { useFetchWeather } from "@/composables/useFetchWeather";
+const { weatherApi } = useFetchWeather();
+
 const props = defineProps({ city: { type: String } });
 
 const loading = ref(true);
@@ -14,11 +17,11 @@ const forecast = ref([]);
 
 try {
   const response = await axios.get(
-    `https://api.openweathermap.org/data/2.5/weather?q=${props.city}&units=metric&appid=6d3c36be2dd3452ee751207694bc3064`
+    `https://api.openweathermap.org/data/2.5/weather?q=${props.city}&units=metric&appid=${weatherApi.value}`
   );
 
   const response2 = await axios.get(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${props.city}&units=metric&appid=6d3c36be2dd3452ee751207694bc3064`
+    `https://api.openweathermap.org/data/2.5/forecast?q=${props.city}&units=metric&appid=${weatherApi.value}`
   );
   const weatherData = response.data;
   const forecastData = response2.data.list;
